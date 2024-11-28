@@ -1,6 +1,15 @@
 import { Request, Response, RequestHandler } from 'express';
 import bcrypt from 'bcrypt';
 import { User } from '../models/User';
+import jwt from 'jsonwebtoken';
+
+const generateAccessToken = (payload: object) => {
+    return jwt.sign(payload, process.env.ACCESS_TOKEN_SECRET!, { expiresIn: '3h' });
+  };
+  
+  const generateRefreshToken = (payload: object) => {
+    return jwt.sign(payload, process.env.REFRESH_TOKEN_SECRET!, { expiresIn: '5d' });
+  };
 
 export const registerUser: RequestHandler = async (req: Request, res: Response): Promise<void> => {
     try {

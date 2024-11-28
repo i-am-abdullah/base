@@ -97,3 +97,20 @@ export const registerUser: RequestHandler = async (req: Request, res: Response):
       res.status(401).json({ message: 'Invalid or expired refresh token' });
     }
   };
+
+  export const validateUser: RequestHandler = async (req: Request, res: Response): Promise<void> => {
+    try {
+      if (!req.user) {
+        res.status(401).json({ message: 'User not authenticated' });
+        return;
+      }
+      const { username, email } = req.user;
+      res.status(200).json({
+        message: 'User authenticated',
+        user: { username, email },
+      });
+    } catch (error) {
+      console.error('Error validating user:', error);
+      res.status(401).json({ message: 'Invalid or expired token' });
+    }
+  };

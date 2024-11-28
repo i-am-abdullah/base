@@ -77,3 +77,23 @@ export const registerUser: RequestHandler = async (req: Request, res: Response):
       res.status(500).json({ message: 'Internal server error' });
     }
   };
+
+  export const refreshToken: RequestHandler = async (req: Request, res: Response): Promise<void> => {
+    try {
+      const { token } = req.body;
+  
+      if (!token) {
+        res.status(400).json({ message: 'Refresh token is required' });
+        return;
+      }
+  
+      const decoded = jwt.verify(token, process.env.REFRESH_TOKEN_SECRET!) as { userId: string; username: string; email: string };
+  
+      const newAccessToken = generateAccessToken({ userId: decoded.userId, username: decoded.username, email: decoded.email });
+  
+      res.status(200).json({ accessToken: newAccessToken });
+    } catch (error) {
+      console.error('Error refreshing token:', error);
+      res.status(401).json({ message: 'Invalid or expired refresh token' });
+    }
+  };

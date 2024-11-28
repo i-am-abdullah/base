@@ -1,0 +1,33 @@
+### Register User
+POST http://localhost:5000/api/auth/register
+Content-Type: application/json
+
+{
+  "fullName": "John Doe",
+  "username": "johndoe",
+  "email": "john.doe@example.com",
+  "password": "SecurePassword123"
+}
+
+
+### Login User
+POST http://localhost:5000/api/auth/login
+Content-Type: application/json
+
+{
+  "username": "johndoe",
+  "password": "SecurePassword123"
+}
+
+
+### Validate User
+GET http://localhost:5000/api/auth/validate
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NzQ4Yjk2YmJiMmQxZTcwNjYyN2RjZTciLCJ1c2VybmFtZSI6ImpvaG5kb2UiLCJlbWFpbCI6ImpvaG4uZG9lQGV4YW1wbGUuY29tIiwiaWF0IjoxNzMyODE5NTQ5LCJleHAiOjE3MzI4MzAzNDl9.bC4p5-mI27dTRkC9anG3R1LMGtAYASP7tMe6MX8sxWM
+
+### Refresh Token
+POST http://localhost:5000/api/auth/refresh-token
+Content-Type: application/json
+
+{
+  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NzQ4Yjk2YmJiMmQxZTcwNjYyN2RjZTciLCJ1c2VybmFtZSI6ImpvaG5kb2UiLCJlbWFpbCI6ImpvaG4uZG9lQGV4YW1wbGUuY29tIiwiaWF0IjoxNzMyODE5NTI1LCJleHAiOjE3MzMyNTE1MjV9.NCPfPXCoUslBCOZ-z__sho_gxKfq9QfHBE0K2a37YLA"
+}

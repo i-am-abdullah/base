@@ -44,3 +44,36 @@ export const registerUser: RequestHandler = async (req: Request, res: Response):
       res.status(500).json({ message: 'Internal server error' });
     }
   };
+
+  export const loginUser: RequestHandler = async (req: Request, res: Response): Promise<void> => {
+    try {
+      const { username, email, password } = req.body;
+  
+      const user = await User.findOne({
+        $or: [{ username }, { email }],
+      });
+  
+      if (!user) {
+        res.status(400).json({ message: 'Invalid credentials' });
+        return;
+      }
+  
+      const isMatch = await bcrypt.compare(password, user.password);
+      if (!isMatch) {
+        res.status(400).json({ message: 'Invalid credentials' });
+        return;
+      }
+  
+      const accessToken = generateAccessToken({ userId: user.id, username: user.username, email: user.email });
+      const refreshToken = generateRefreshToken({ userId: user.id, username: user.username, email: user.email });
+  
+      res.status(200).json({
+        message: 'Login successful',
+        accessToken,
+        refreshToken,
+      });
+    } catch (error) {
+      console.error('Error logging in user:', error);
+      res.status(500).json({ message: 'Internal server error' });
+    }
+  };
